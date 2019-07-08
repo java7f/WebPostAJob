@@ -8,92 +8,41 @@
 </head>
 
 <body>
-    <div class="container" style="margin-top: 1%;">
-        <h4 *ngIf="isLoggedIn()">Welcome {{ userEmail }}</h4>
+    <div class="container" style="margin-top: 3%;">
         <form class="form-inline my-2 my-lg-0 justify-content-between">
             <div>
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-primary" type="button" id="button-addon"><i class="fas fa-search"></i>
+                <input class="form-control mr-sm-2" #search type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-primary" type="button" id="button-addon" (click)="registerSearch(search.value)">
+                    <i class="fas fa-search"></i>
                     Search...</button>
             </div>
-            <button class="btn btn-success" type="button" id="button-addon" (click)= "postJobForm">
+            <button class="btn btn-success" type="button" id="button-addon" routerLink="/postjob">
                 <i class="fas fa-bullhorn"></i>
-                 Post a Job</button>
+                Post a Job</button>
         </form>
-        <h5 class="text-center"><i class="fas fa-tint"></i> Design</h5>
-        <hr>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Location</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Company</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Santo Domingo</td>
-                    <td>Web Designer</td>
-                    <td>MercaSID</td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="btn-toolbar justify-content-end">
-                            <button class="btn btn-light"><i class="fas fa-angle-left"></i></button>
-                            <button class="btn btn-light">1</button>
-                            <button class="btn btn-light">2</button>
-                            <button class="btn btn-light">3</button>
-                            <button class="btn btn-light">4</button>
-                            <button class="btn btn-light"><i class="fas fa-angle-right"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <h5 class="text-center"><i class="fab fa-node-js"></i> Programming</h5>
-        <hr>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Location</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Company</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Santo Domingo</td>
-                    <td>Web Developer</td>
-                    <td>Claro RD</td>
-                </tr>
-                <tr>
-                    <td>Santiago</td>
-                    <td>Tester</td>
-                    <td>Intellisys Inc.</td>
-                </tr>
-                <tr>
-                    <td>La Romana</td>
-                    <td>Android Developer</td>
-                    <td>Casa de Campo</td>
-                </tr>
-                <tr>
-                    <td>Punta Cana</td>
-                    <td>QA Engineer</td>
-                    <td style="background:#FFA1A1;color:#8B0000">Confidential</td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="btn-toolbar justify-content-end">
-                            <button class="btn btn-light"><i class="fas fa-angle-left"></i></button>
-                            <button class="btn btn-light">1</button>
-                            <button class="btn btn-light">2</button>
-                            <button class="btn btn-light">3</button>
-                            <button class="btn btn-light">4</button>
-                            <button class="btn btn-light"><i class="fas fa-angle-right"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngFor="let cat of cat$ | async" style="margin-top: 5%;">
+            <h4 class="text-center">{{ cat.name }}</h4>
+            <hr>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Location</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Company</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let todo of getCategoryList(cat.name) | slice:0:10" (click)="registerJob(todo)" routerLink="/jobinfo">
+                        <ng-container *ngIf="cat.name === todo.category">
+                            <td>{{ todo.location }} {{i}}</td>
+                            <td>{{ todo.position }}</td>
+                            <td>{{ todo.company }}</td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+            <a routerLink="/alljobs" class="float-right" (click)="registerCategory(cat.name)">See all {{cat.name}} jobs</a>
+        </div>
+
     </div>
 </body>

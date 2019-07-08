@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UploadJobService } from './upload-job.service';
+import { FirebaseCrudService } from './firebase-crud.service';
 
-describe('UploadJobService', () => {
+describe('FirebaseCrudService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UploadJobService = TestBed.get(UploadJobService);
+    const service: FirebaseCrudService = TestBed.get(FirebaseCrudService);
     expect(service).toBeTruthy();
   });
 });

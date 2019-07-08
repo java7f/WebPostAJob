@@ -23,11 +23,10 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
   }
-
   /**
    * Uses de AuthService to register the user
    */
-  registerUser(name, lastName, email, password) {
+  registerUser(name, lastName, email, password, userTypeSelected) {
 
     var db = this
 
@@ -35,23 +34,13 @@ export class RegisterComponent implements OnInit {
       name: name,
       lastName: lastName,
       email: email,
-      userType: {
-        administrator: true,
-        poster: false,
-        user: false
-      }
+      userType: userTypeSelected
     }
 
     this.afAuth.auth.createUserWithEmailAndPassword(this.userData.email, password)
-    .then(() => {
-      db.afs.collection("users").add({
-        name: this.userData.name,
-        lastName: this.userData.lastName,
-        email: this.userData.email,
-        userType: this.userData.userType
-      })
-
-      this.router.navigateByUrl('/dashboard')
+    .then((user) => {
+      db.afs.collection("users").doc(user.user.uid).set(this.userData);
+      this.router.navigateByUrl('/login')
     })
       .catch(function (e) {
         window.alert(e.message)

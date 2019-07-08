@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Job } from '../services/job'
 import { Category } from '../services/category'
@@ -7,37 +6,35 @@ import { Observable } from 'rxjs';
 
 import { FirebaseCrudService } from '../services/firebase-crud.service'
 
-
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
-
+  selector: 'app-all-jobs',
+  templateUrl: './all-jobs.component.html',
+  styleUrls: ['./all-jobs.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class AllJobsComponent implements OnInit {
 
+  category : string;
   job$: Observable<Job[]>;
   cat$: Observable<Category[]>; 
   crud : FirebaseCrudService;
-  jobsToShow: Job[];
 
   constructor(
-    private router : Router,
     public afs : AngularFirestore,
-    crud : FirebaseCrudService) { 
-      this.crud = crud;
-      this.jobsToShow = [];
-     }
+    crud : FirebaseCrudService
+  ) {
+    this.crud = crud;
+   }
 
   ngOnInit() {
     this.crud.getJobs();
     this.crud.getCategories();
     this.job$ = this.crud.job$;
     this.cat$ = this.crud.cat$;
+    this.getCategory();
+  }
 
-    this.job$.subscribe((list) => {
-      this.jobsToShow = list;
-    })
+  getCategory() {
+    this.category = localStorage.getItem('cat');
   }
 
   registerJob(job : Job){
@@ -52,17 +49,17 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem('jobType', job.type);
   }
 
-  registerSearch(words : string){
-    localStorage.setItem('search', words);
-    this.router.navigateByUrl('/searchResult')
-  }
+  filterJobs() {
+    this.job$.forEach((doc) => {
+      doc.map(jobs => {
+        if(this.category === jobs.category) {
+          console.log(jobs.category);
+          this.filteredJobs.push(jobs);
+        }
+      })
+    })
 
-  registerCategory(cat:string){
-    localStorage.setItem('cat', cat);
-  }
-
-  getCategoryList(cat:string): Job[] {
-    return this.jobsToShow.filter(job => job.category === cat);
+    console.log(this.filteredJobs);
   }
 
 }

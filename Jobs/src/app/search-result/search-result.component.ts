@@ -1,43 +1,61 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Job } from '../services/job'
 import { Category } from '../services/category'
 import { Observable } from 'rxjs';
-
 import { FirebaseCrudService } from '../services/firebase-crud.service'
-
+import { JobInfoComponent } from '../job-info/job-info.component';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
-
+  selector: 'app-search-result',
+  templateUrl: './search-result.component.html',
+  styleUrls: ['./search-result.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class SearchResultComponent implements OnInit {
 
+  search : string;
   job$: Observable<Job[]>;
-  cat$: Observable<Category[]>; 
   crud : FirebaseCrudService;
-  jobsToShow: Job[];
+  jobsToShow : Job[];
 
-  constructor(
-    private router : Router,
-    public afs : AngularFirestore,
-    crud : FirebaseCrudService) { 
+  constructor(public afs : AngularFirestore,
+    crud : FirebaseCrudService) {
       this.crud = crud;
       this.jobsToShow = [];
      }
 
   ngOnInit() {
+    this.getSearch();
     this.crud.getJobs();
     this.crud.getCategories();
     this.job$ = this.crud.job$;
-    this.cat$ = this.crud.cat$;
 
     this.job$.subscribe((list) => {
       this.jobsToShow = list;
     })
+  }
+
+  getSearch() {
+    this.search = localStorage.getItem('search');
+    localStorage.removeItem('search');
+    console.log(this.search);
+  }
+
+  getSearchResult(): Job[] {
+
+    let jobSearch : Job[] = [];
+    let key = this.search.toLowerCase();
+
+    this.jobsToShow.forEach((job) => {
+
+      if(job.category.toLowerCase().includes(key) || job.location.toLowerCase().includes(key) || 
+          job.position.toLowerCase().includes(key) || job.company.toLowerCase().includes(key)) {
+
+            jobSearch.push(job);
+      }
+    })
+
+    return jobSearch;
   }
 
   registerJob(job : Job){
@@ -51,18 +69,4 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem('jobPos', job.position);
     localStorage.setItem('jobType', job.type);
   }
-
-  registerSearch(words : string){
-    localStorage.setItem('search', words);
-    this.router.navigateByUrl('/searchResult')
-  }
-
-  registerCategory(cat:string){
-    localStorage.setItem('cat', cat);
-  }
-
-  getCategoryList(cat:string): Job[] {
-    return this.jobsToShow.filter(job => job.category === cat);
-  }
-
 }

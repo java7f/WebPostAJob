@@ -23,15 +23,12 @@ export class LoginComponent implements OnInit {
 
   // Sign in with email/password
   signIn(email, password) {
-   // this.router.navigateByUrl('')
-    this.afAuth.auth.signInWithEmailAndPassword(email, password).then(()=>{
-       localStorage.setItem('userEmail',email);
-       localStorage.setItem('isLoggedIn', 'true');
-        console.log('AIUDAA');
-        this.router.navigateByUrl('/dashboard');
+    this.afAuth.auth.signInWithEmailAndPassword(email, password).then((user)=>{
+      localStorage.setItem('userEmail',email);
+      localStorage.setItem('isLoggedIn', 'true');
+      this.router.navigateByUrl('/dashboard');
     })
     .catch(function (e) {
-
       window.alert(e.message);
     })
   }
