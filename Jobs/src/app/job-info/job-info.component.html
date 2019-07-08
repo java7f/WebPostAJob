@@ -26,8 +26,10 @@
           <img src="https://devitems.com/preview/appmom/img/mobile/2.png" alt="">
         </div>
       </div>
-      <button type="button" class="btn btn-outline-danger"
-      (click)="erase()">Delete job</button>
+      <button type="button" class="btn btn-outline-danger" (click)="erase()">Delete job</button> <span
+        style="margin-left: 1%">
+        <button type="button" class="btn btn-info" routerLink="/updatejob"
+        (click)="registerJob(job)">Update Job Info</button></span>
     </div>
   </div>
 </div>

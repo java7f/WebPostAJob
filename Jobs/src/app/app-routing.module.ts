@@ -7,6 +7,8 @@ import { PostjobComponent } from './postjob/postjob.component';
 import { JobInfoComponent } from './job-info/job-info.component';
 import { AllJobsComponent } from './all-jobs/all-jobs.component'
 import { SearchResultComponent } from './search-result/search-result.component';
+import { UpdateJobComponent } from './update-job/update-job.component';
+import { CategoryModelComponent } from './category-model/category-model.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -16,7 +18,9 @@ const routes: Routes = [
   { path: 'postjob', component: PostjobComponent },
   { path: 'jobinfo', component: JobInfoComponent },
   { path: 'alljobs', component: AllJobsComponent },
-  { path: 'searchResult', component: SearchResultComponent }
+  { path: 'searchResult', component: SearchResultComponent },
+  { path: 'updatejob', component: UpdateJobComponent},
+  { path: 'newcat', component: CategoryModelComponent}
 ];
 
 @NgModule({

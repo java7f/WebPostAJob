@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators'
 import { Job } from '../services/job'
 import { Category } from '../services/category'
 import { Observable } from 'rxjs';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root'
@@ -12,20 +13,24 @@ export class FirebaseCrudService {
 
   jobCollectionRef: AngularFirestoreCollection<Job>;
   catCollectionRef: AngularFirestoreCollection<Category>;
+  userCollectionRef: AngularFirestoreCollection<User>;
   job$: Observable<Job[]>;
   cat$: Observable<Category[]>;
+  user$: Observable<User[]>;
+  newUser: User;
 
   constructor(
-    public afs : AngularFirestore
+    public afs: AngularFirestore
   ) {
     this.getCategories();
     this.getJobs();
-   }
+    this.newUser = <User>{};
+  }
 
-  getCategories(){
+  getCategories() {
 
     var db = this;
-    
+
     this.catCollectionRef = db.afs.collection<Category>('categories');
     this.cat$ = this.catCollectionRef.snapshotChanges().pipe(map(documents => {
 
@@ -33,7 +38,7 @@ export class FirebaseCrudService {
         const catList = categories.payload.doc.data() as Category;
         const id = categories.payload.doc.id;
 
-        return {id, ...catList}
+        return { id, ...catList }
       })
     }))
 
@@ -50,21 +55,13 @@ export class FirebaseCrudService {
         const jobsList = jobs.payload.doc.data() as Job;
         const id = jobs.payload.doc.id;
 
-        return {id, ...jobsList};
+        return { id, ...jobsList };
       })
     }))
-    
-    /* db.afs.collection("jobs").snapshotChanges().subscribe((querySnapshot) => {
-      querySnapshot.map((aiuda) => {
-        const jobCreated = aiuda.payload.doc.data()
-        console.log(jobCreated)
-        
-      })
-    }) */
-    
+
   }
 
-  updateJob(job : Job) {
+  updateJob(job: Job) {
     this.jobCollectionRef.doc(job.id).update({
       category: job.category,
       company: job.company,
@@ -75,7 +72,23 @@ export class FirebaseCrudService {
     })
   }
 
-  deleteJob(job : Job){
+  deleteJob(job: Job) {
     this.jobCollectionRef.doc(job.id).delete();
+  }
+
+  registerUserType(id: string) {
+    console.log(id);
+
+    this.userCollectionRef = this.afs.collection<User>('users');
+    this.userCollectionRef.snapshotChanges().pipe(map(userDoc => {
+      return userDoc.map(user => {
+        const result = user.payload.doc.data() as User;
+        const idExtracted = user.payload.doc.id;
+        console.log(result.userType)
+        if (id === idExtracted)
+          localStorage.setItem('userType', result.userType);
+          console.log(result.userType)
+      })
+    }))
   }
 }

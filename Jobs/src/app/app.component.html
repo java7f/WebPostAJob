@@ -1,16 +1,27 @@
 <!-- As a link -->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end"
+*ngIf="router.url != '/login' && router.url != '/register'">
     <a class="navbar-brand" routerLink="/dashboard">Get a Job!</a>
-    <button class="btn btn-danger ml-auto mr-1">Log out</button>
+    <button class="btn btn-danger ml-auto mr-1" (click)="logOut()">Log out</button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
         <ul class="navbar-nav text-right">
+            
             <li class="nav-item active">
                 <a *ngIf="isLoggedIn()" class="nav-link" href="#">Welcome {{ userEmail }}</a>
             </li>
-            
+        <!-- <ng-template #dropdown>
+                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Dropdown link
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" href="#">Add Categories</a>
+                        </div>
+                      </li>
+        </ng-template> -->
         </ul>
     </div>
 </nav>

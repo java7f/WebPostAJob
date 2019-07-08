@@ -40,4 +40,16 @@ export class JobInfoComponent implements OnInit {
     this.crud.deleteJob(this.job);
     this.router.navigateByUrl('/dashboard');
   }
+
+  registerJob(job : Job){
+    console.log(job);
+    
+    localStorage.setItem('jobId', job.id);
+    localStorage.setItem('jobCat', job.category);
+    localStorage.setItem('jobCom', job.company);
+    localStorage.setItem('jobDesc', job.description);
+    localStorage.setItem('jobLoc', job.location);
+    localStorage.setItem('jobPos', job.position);
+    localStorage.setItem('jobType', job.type);
+  }
 }

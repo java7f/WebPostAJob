@@ -49,17 +49,4 @@ export class AllJobsComponent implements OnInit {
     localStorage.setItem('jobType', job.type);
   }
 
-  filterJobs() {
-    this.job$.forEach((doc) => {
-      doc.map(jobs => {
-        if(this.category === jobs.category) {
-          console.log(jobs.category);
-          this.filteredJobs.push(jobs);
-        }
-      })
-    })
-
-    console.log(this.filteredJobs);
-  }
-
 }

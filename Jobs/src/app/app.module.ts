@@ -23,6 +23,8 @@ import { PostjobComponent } from './postjob/postjob.component';
 import { JobInfoComponent } from './job-info/job-info.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { AllJobsComponent } from './all-jobs/all-jobs.component';
+import { UpdateJobComponent } from './update-job/update-job.component';
+import { CategoryModelComponent } from './category-model/category-model.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { AllJobsComponent } from './all-jobs/all-jobs.component';
     JobInfoComponent,
     SearchResultComponent,
     AllJobsComponent,
+    UpdateJobComponent,
+    CategoryModelComponent,
   ],
   imports: [
     BrowserModule,
